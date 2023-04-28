@@ -1,0 +1,4 @@
+sudo kubectl port-forward pod/udacity-devops-78585497b8-8qqf5 --address 0.0.0.0 8000:80
+Forwarding from 0.0.0.0:8000 -> 80
+Handling connection for 8000
+Handling connection for 8000
