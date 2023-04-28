@@ -1,4 +1,4 @@
-<include a CircleCI status badge, here>
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/FTp3Y27BA2Rg164uUzURgs/WYNENqB9VgtBDvivEUnecf/tree/master.svg?style=svg&circle-token=44d5ac9e43f878a2437a795477e2baaf61c4137c)](https://dl.circleci.com/status-badge/redirect/circleci/FTp3Y27BA2Rg164uUzURgs/WYNENqB9VgtBDvivEUnecf/tree/master)
 
 ## Project Overview
 
