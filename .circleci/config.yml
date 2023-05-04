@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  build_lint:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
@@ -41,3 +41,36 @@ jobs:
           command: |
             . venv/bin/activate
             make lint 
+
+  push_image:
+    docker:
+      - image: python:3.7.3-stretch
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # build docker image
+      - run:
+          name: build docker image
+          command: |
+            docker build --tag=udacity_capstone .
+            docker image ls
+
+      - run:
+          name: push docker image
+          command: |
+            echo "Docker ID and Image: $DOCKER_PATH"
+            docker login --username=nitinbhagwat --password=$DOCKER_PASSWORD
+            docker tag uda_devops $DOCKER_PATH
+
+
+
+workflows:
+  capstone:
+    jobs:
+      - build_lint
+      - push_image
+          requires: [build_lint]
+
