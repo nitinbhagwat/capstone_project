@@ -65,7 +65,7 @@ jobs:
           command: |
             echo "Docker ID and Image: $DOCKER_PATH"
             docker login --username=nitinbhagwat --password=$DOCKER_PASSWORD
-            docker tag uda_devops $DOCKER_PATH
+            docker tag udacity_capstone $DOCKER_PATH
 
 
 
