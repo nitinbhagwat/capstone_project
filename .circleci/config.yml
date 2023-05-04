@@ -44,12 +44,13 @@ jobs:
 
   push_image:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: docker:17.05.0-ce-git
 
     working_directory: ~/repo
 
     steps:
       - checkout
+      - setup_remote_docker
 
       # build docker image
       - run:
