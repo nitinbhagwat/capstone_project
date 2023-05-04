@@ -71,6 +71,6 @@ workflows:
   capstone:
     jobs:
       - build_lint
-      - push_image
+      - push_image:
           requires: [build_lint]
 
