@@ -44,7 +44,7 @@ jobs:
 
   push_image:
     docker:
-      - image: python:3.7.3-stretch
+      - image: python:3.7-alpine3.11
 
     working_directory: ~/repo
 
@@ -55,7 +55,7 @@ jobs:
       - run:
           name: build docker image
           command: |
-            pip install docker
+            apk add --update docker
             docker build --tag=udacity_capstone .
             docker image ls
 
