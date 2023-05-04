@@ -55,6 +55,7 @@ jobs:
       - run:
           name: build docker image
           command: |
+            pip install docker
             docker build --tag=udacity_capstone .
             docker image ls
 
