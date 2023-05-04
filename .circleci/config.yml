@@ -68,7 +68,16 @@ jobs:
             docker tag udacity_capstone $DOCKER_PATH
             docker push $DOCKER_PATH
 
+  create_cluster:
+    docker: 
+      - image: amazon/aws-cli
 
+    steps:  
+      - run:
+          name: create cluster using eksctl
+          command: |
+            eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --profile ${CIRCLE_WORKFLOW_ID:0:7}
+            
 
 workflows:
   capstone:
@@ -76,4 +85,5 @@ workflows:
       - build_lint
       - push_image:
           requires: [build_lint]
-
+      - create_cluster:
+          requires: [push_image]
