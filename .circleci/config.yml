@@ -74,9 +74,10 @@ jobs:
             docker tag udacity_capstone $DOCKER_PATH
             docker push $DOCKER_PATH
 
-  create-cluster:
+  create_cluster:
     docker:
       - image: python:3.7-alpine3.11
+
     steps:
       - checkout
       - run:
@@ -120,7 +121,7 @@ jobs:
 
   # create_cluster:
   #   docker: 
-  #     - image: amazon/aws-cli
+  #     - image: amazon/aws-cli@2.0.3
   #   steps:  
   #     - run:
   #         name: create cluster using eksctl
