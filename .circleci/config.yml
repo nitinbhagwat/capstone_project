@@ -3,6 +3,12 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
 version: 2.1
+
+orbs:
+  aws-eks: circleci/aws-eks@1.1.0
+  kubernetes: circleci/kubernetes@0.12.0
+  aws-cli: circleci/aws-cli@2.0.3
+
 jobs:
   build_lint:
     docker:
@@ -68,15 +74,58 @@ jobs:
             docker tag udacity_capstone $DOCKER_PATH
             docker push $DOCKER_PATH
 
-  create_cluster:
-    docker: 
-      - image: amazon/aws-cli
-
-    steps:  
+  create-cluster:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
       - run:
-          name: create cluster using eksctl
+          name: Install tar and gzip
           command: |
-            eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --profile ${CIRCLE_WORKFLOW_ID:0:7}
+            apk add --update tar gzip nodejs npm curl  
+      - run:
+          name: install_awscli
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            ./aws/install 
+      - run:
+          name: install_aws_eks
+          command: |
+            mkdir -p src
+            curl --silent --location --retry 5 "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C src
+            chmod +x src/eksctl
+            SUDO=""
+            if [ $(id -u) -ne 0 ] && which sudo > /dev/null ; then
+                SUDO="sudo"
+            fi
+                $SUDO mv src/eksctl /usr/local/bin/
+                rmdir src
+      - run:
+          name: install_kubectl
+          command: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+            kubectl version --client
+      - run:
+          name: AWS EKS cluster creation
+          command: |
+           eksctl create cluster --name eksctl-capstone --region $AWS_DEFAULT_REGION --zones us-east-1a,us-east-1b,us-east-1c,us-east-1d 
+            
+      - run:
+          name: AWS EKS get cluster creation
+          command: |
+            eksctl utils describe-stacks --region $AWS_DEFAULT_REGION --cluster=eksctl-capstone
+            eksctl get cluster --name=eksctl-capstone --region=$AWS_DEFAULT_REGION
+
+  # create_cluster:
+  #   docker: 
+  #     - image: amazon/aws-cli
+  #   steps:  
+  #     - run:
+  #         name: create cluster using eksctl
+  #         command: |
+  #           eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --profile ${CIRCLE_WORKFLOW_ID:0:7}
             
 
 workflows:
