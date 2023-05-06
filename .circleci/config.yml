@@ -76,20 +76,21 @@ jobs:
 
   create_cluster:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
 
     steps:
       - checkout
-      - run:
-          name: Install tar and gzip
-          command: |
-            apk add --update tar gzip nodejs npm curl  
+      # - run:
+      #     name: Install tar and gzip
+      #     command: |
+      #       apk add --update tar gzip nodejs npm curl  
       - run:
           name: install_awscli
           command: |
+            sudo apt-get update && sudo apt-get install -yy less
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
-            ./aws/install 
+            sudo ./aws/install
       - run:
           name: install_aws_eks
           command: |
