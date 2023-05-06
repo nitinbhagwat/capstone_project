@@ -119,8 +119,8 @@ jobs:
               kubectl create deploy udacity-capstone --image=$DOCKER_PATH:${CIRCLE_WORKFLOW_ID:0:7}
               # See the status
               kubectl get deploy,rs,svc,pods,nodes
-              POD=$(kubectl get pod -l app=my-app -o jsonpath="{.items[0].metadata.name}")
-              kubectl port-forward pod/$POD --address 0.0.0.0 8000:80
+              POD=$(kubectl get pods|grep capstone|awk '{print $1}'|head -n 1)
+              kubectl port-forward $POD --address 0.0.0.0 8000:80
               echo "kubectl getting deployments.."
               kubectl get deployments
             else
