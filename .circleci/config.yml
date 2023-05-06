@@ -71,7 +71,7 @@ jobs:
           command: |
             echo "Docker ID and Image: $DOCKER_PATH"
             docker login --username=nitinbhagwat --password=$DOCKER_PASSWORD
-            docker tag udacity_capstone $DOCKER_PATH
+            docker tag udacity_capstone $DOCKER_PATH:${CIRCLE_WORKFLOW_ID:0:7}
             docker push $DOCKER_PATH
 
   create_cluster:
@@ -111,14 +111,20 @@ jobs:
       - run:
           name: AWS EKS cluster creation
           command: |
-            eksctl delete cluster --region=us-east-1 --name=eksctl-capstone
-           # eksctl create cluster --name eksctl-capstone --region=us-east-1 --zones us-east-1a,us-east-1b,us-east-1c,us-east-1d 
+            eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --zones us-east-1a,us-east-1b,us-east-1c,us-east-1d 
+            aws eks update-kubeconfig --name eksctl-capstone --region=$AWS_DEFAULT_REGION
+            # Deploy an App from the Dockerhub to the Kubernetes Cluster
+            kubectl create deploy udacity-capstone --image=$DOCKER_PATH:${CIRCLE_WORKFLOW_ID:0:7}
+            # See the status
+            kubectl get deploy,rs,svc,pods
+
             
       # - run:
       #     name: AWS EKS get cluster creation
       #     command: |
       #       eksctl utils describe-stacks --region=us-east-1 --cluster=eksctl-capstone
       #       eksctl get cluster --name=eksctl-capstone --region=us-east-1
+      # eksctl delete cluster --region=us-east-1 --name=eksctl-capstone
 
   # create_cluster:
   #   docker: 
