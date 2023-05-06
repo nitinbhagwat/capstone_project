@@ -112,12 +112,24 @@ jobs:
       - run:
           name: AWS EKS cluster creation
           command: |
-            eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --zones us-east-1a,us-east-1b,us-east-1c,us-east-1d 
-            aws eks update-kubeconfig --name eksctl-capstone --region=$AWS_DEFAULT_REGION
-            # Deploy an App from the Dockerhub to the Kubernetes Cluster
-            kubectl create deploy udacity-capstone --image=$DOCKER_PATH:${CIRCLE_WORKFLOW_ID:0:7}
-            # See the status
-            kubectl get deploy,rs,svc,pods
+            if eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --zones us-east-1a,us-east-1b,us-east-1c,us-east-1d 
+            then
+              aws eks update-kubeconfig --name eksctl-capstone --region=$AWS_DEFAULT_REGION
+              # Deploy an App from the Dockerhub to the Kubernetes Cluster
+              kubectl create deploy udacity-capstone --image=$DOCKER_PATH:${CIRCLE_WORKFLOW_ID:0:7}
+              # See the status
+              kubectl get deploy,rs,svc,pods,nodes
+              POD=$(kubectl get pod -l app=my-app -o jsonpath="{.items[0].metadata.name}")
+              kubectl port-forward pod/$POD --address 0.0.0.0 8000:80
+              echo "kubectl getting deployments.."
+              kubectl get deployments
+            else
+              echo "Stack already exists, updating it."
+              aws eks update-kubeconfig --name eksctl-capstone --region=$AWS_DEFAULT_REGION
+              kubectl get deploy,rs,svc,pods,nodes
+              kubectl rollout restart udacity-capstone
+              kubectl get deployments
+            fi
 
             
       # - run:
