@@ -4,6 +4,20 @@
 #
 version: 2.1
 
+commands:
+  destroy-environment:
+    description: Destroy cloudformation stacks created by eksctl.
+    parameters:
+      # Add parameter here   
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            # Your code here
+            eksctl delete cluster --region=$AWS_DEFAULT_REGION --name=eksctl-capstone
+            
+
 orbs:
   aws-eks: circleci/aws-eks@1.1.0
   kubernetes: circleci/kubernetes@0.12.0
@@ -120,6 +134,12 @@ jobs:
               # See the status
               kubectl get deploy,rs,svc,pods,nodes
               POD=$(kubectl get pods|grep capstone|awk '{print $1}'|head -n 1)
+              echo $POD
+              sleep 1m
+              kubectl get pods
+              sleep 1m
+              kubectl get pods
+              echo $POD
               kubectl port-forward $POD --address 0.0.0.0 8000:80
               echo "kubectl getting deployments.."
               kubectl get deployments
@@ -130,6 +150,8 @@ jobs:
               kubectl rollout restart udacity-capstone
               kubectl get deployments
             fi
+
+      - destroy-environment
 
             
       # - run:
