@@ -138,9 +138,10 @@ jobs:
               sleep 1m
               kubectl get pods
               sleep 1m
-              kubectl get pods
-              echo $POD
-              kubectl port-forward $POD --address 0.0.0.0 8000:80
+              kubectl expose deployment udacity-capstone --port=80 --target-port=80
+              # kubectl get pods
+              # echo $POD
+              # kubectl port-forward $POD --address 0.0.0.0 8000:80
               echo "kubectl getting deployments.."
               kubectl get deployments
             else
