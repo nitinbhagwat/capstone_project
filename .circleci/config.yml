@@ -154,24 +154,6 @@ jobs:
 
       - destroy-environment
 
-            
-      # - run:
-      #     name: AWS EKS get cluster creation
-      #     command: |
-      #       eksctl utils describe-stacks --region=us-east-1 --cluster=eksctl-capstone
-      #       eksctl get cluster --name=eksctl-capstone --region=us-east-1
-      # eksctl delete cluster --region=us-east-1 --name=eksctl-capstone
-
-  # create_cluster:
-  #   docker: 
-  #     - image: amazon/aws-cli@2.0.3
-  #   steps:  
-  #     - run:
-  #         name: create cluster using eksctl
-  #         command: |
-  #           eksctl create cluster --name eksctl-capstone --region=$AWS_DEFAULT_REGION --profile ${CIRCLE_WORKFLOW_ID:0:7}
-            
-
 workflows:
   capstone:
     jobs:

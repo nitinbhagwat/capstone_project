@@ -1,10 +1,18 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/nitinbhagwat/udacity_project-4/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/nitinbhagwat/udacity_project-4/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/nitinbhagwat/capstone_project/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/nitinbhagwat/capstone_project/tree/master)
 
 ## Project Overview
 
-In this project, you will apply the skills you have acquired in this course to operationalize a Machine Learning Microservice API. 
+In this project you will apply the skills and knowledge which were developed throughout the Cloud DevOps Nanodegree program. These include:
 
-You are given a pre-trained, `sklearn` model that has been trained to predict housing prices in Boston according to several features, such as average rooms in a home and data about highway access, teacher-to-pupil ratios, and so on. You can read more about the data, which was initially taken from Kaggle, on [the data source site](https://www.kaggle.com/c/boston-housing). This project tests your ability to operationalize a Python flask app—in a provided file, `app.py`—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
+Working in AWS
+Using Jenkins or Circle CI to implement Continuous Integration and Continuous Deployment
+Building pipelines
+Working with Ansible and CloudFormation to deploy clusters
+Building Kubernetes clusters
+Building Docker containers in pipelines
+As a capstone project, the directions are rather more open-ended than they were in the previous projects in the program. You will also be able to make some of your own choices in this capstone, for the type of deployment you implement, which services you will use, and the nature of the application you develop.
+
+You will develop a CI/CD pipeline for micro services applications with either blue/green deployment or rolling deployment. You will also develop your Continuous Integration steps as you see fit, but must at least include typographical checking (aka “linting”). To make your project stand out, you may also choose to implement other checks such as security scanning, performance testing, integration testing, etc.!
 
 ### Project Tasks
 
